@@ -1,5 +1,3 @@
-// script.js
-
 $(document).ready(function () {
     $('.loading-div').hide();
 

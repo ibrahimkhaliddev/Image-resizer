@@ -1,5 +1,3 @@
-// dragAndDrop.js
-
 document.addEventListener("DOMContentLoaded", function () {
     let dropArea = document.getElementById("drop-area-text");
     let dropAreaText = dropArea.querySelector("p");
@@ -30,31 +28,26 @@ document.addEventListener("DOMContentLoaded", function () {
         let draggedData = e.dataTransfer;
         let files = draggedData.files;
 
-        // Handle the files
         handleFiles(files);
 
-        // Automatically select the dropped files in the file input
         imageInput.files = files;
 
-        // Trigger the change event on the file input
         let event = new Event('change');
         imageInput.dispatchEvent(event);
     });
 
     dropArea.addEventListener("click", function () {
-        imageInput.click(); // Trigger click on the hidden file input
+        imageInput.click();
     });
 
     imageInput.addEventListener("change", function (event) {
         let input = event.target;
         if (input.files && input.files.length > 0) {
             handleFiles(input.files);
-            // Remove the 'required' attribute when a file is selected
             input.removeAttribute("required");
         }
     });
 
-    // Add a submit event listener to handle form validation
     document.getElementById("compressionForm").addEventListener("submit", function (event) {
         let imageInput = document.getElementById("imageInput");
         if (!imageInput.files || imageInput.files.length === 0) {
