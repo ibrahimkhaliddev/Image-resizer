@@ -1,0 +1,27 @@
+
+.quality-select {
+    width: 100px;
+    height: 50px;
+}
+
+.quality-select-dropdown {
+    width: 100px;
+    height: 50px;
+}
+
+.submit-div {
+    margin-top: 20px;
+}
+
+.download-btn {
+    margin-left: 10px;
+}
+
+.hiddenClass {
+    display: none;
+}
+
+.image-container img{
+    width: 200px;
+    height: 200px;
+}
