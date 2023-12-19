@@ -1,3 +1,5 @@
+<!-- index.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,10 +27,10 @@
                 <div class="form-wrapper">
                     <h2 class="text-center pb-4">Image Compression</h2>
                     <form id="compressionForm" enctype="multipart/form-data">
-                        <div class="mb-2">
-                            <label for="imageInput">Choose an image:</label>
-                            <input type="file" class="form-control" name="imagefile" id="imageInput" accept="image/*"
-                                required>
+                        <div id="drop-area-text" class="mb-2">
+                            <p>Drag & Drop Images Here or Click to Choose</p>
+                            <input type="file" class="form-control d-none" name="imagefile" id="imageInput"
+                                accept="image/*">
                         </div>
 
                         <div class="d-flex justify-content-between image-container mt-4">
@@ -37,13 +39,13 @@
                                 <img src="" id="originalImage" alt="">
                             </div>
                             <div id="compressedImageDiv" class="hidden">
-                                <h4>Compressed Image</h4>
+                                <h4>Resized Image</h4>
                                 <img src="" id="compressedImage" alt="">
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center mt-4">
-                            <label for="compressSize">Image File Size (KB)</label>
+                            <label for="compressSize">Image File Size</label>
                             <select name="compressSize" class="quality-select-dropdown mx-3 form-control"
                                 id="qualitySelect">
                                 <option value="10">10 KB</option>
@@ -86,10 +88,11 @@
 
                         <br>
                         <div class="text-center submit-div d-flex justify-content-center align-items-center">
-                            <button type="submit" class="btn btn-primary" name="upload">Compress</button>
+                            <button type="submit" class="btn btn-lg btn-primary" name="upload">Resize Image</button>
                             <div class="result-container mx-2">
-                                <a id="downloadBtn" class="btn btn-success download-btn" download="compressed_image.jpg"
-                                    href="#" style="display: none;">Download Compressed Image</a>
+                                <a id="downloadBtn" class="btn btn-lg btn-success download-btn"
+                                    download="compressed_image.jpg" href="#" style="display: none;">Download
+                                    Compressed Image</a>
                             </div>
                         </div>
                     </form>
@@ -100,6 +103,7 @@
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/script.js"></script>
+    <script src="assets/js/dragAndDrop.js"></script>
 </body>
 
 </html>

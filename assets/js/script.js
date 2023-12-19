@@ -1,21 +1,7 @@
+// script.js
+
 $(document).ready(function () {
     $('.loading-div').hide();
-
-    $('#imageInput').change(function (event) {
-        var input = event.target;
-
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                var image = document.getElementById('originalImage');
-                image.src = e.target.result;
-                $('#originalImageDiv').removeClass('hidden');
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    });
 
     $('#resizeCheckbox').change(function () {
         $('#resizeInputs').toggleClass('hidden', !this.checked);
@@ -35,7 +21,6 @@ $(document).ready(function () {
     });
 
     $('#compressionForm').submit(function (e) {
-        $('.loading-div').show();
         e.preventDefault();
         var formData = new FormData($(this)[0]);
         $.ajax({
@@ -59,7 +44,5 @@ $(document).ready(function () {
             contentType: false,
             processData: false
         });
-
-        return false;
     });
 });

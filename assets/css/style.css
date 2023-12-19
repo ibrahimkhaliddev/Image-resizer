@@ -90,3 +90,30 @@
         transform: rotate(360deg);
     }
 }
+
+
+#drop-area-text {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#drop-area-text.active {
+    background-color: #f8f8f8;
+}
+
+#drop-area-text p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+#drop-area-text:hover {
+    background-color: #f8f8f8;
+}
