@@ -88,9 +88,7 @@
                         <div class="text-center submit-div d-flex justify-content-center align-items-center">
                             <button type="submit" class="btn btn-lg btn-primary" name="upload">Resize Image</button>
                             <div class="result-container mx-2">
-                                <a id="downloadBtn" class="btn btn-lg btn-success download-btn"
-                                    download="compressed_image.jpg" href="#" style="display: none;">Download
-                                    Compressed Image</a>
+                            <button id="downloadBtn" class="btn btn-lg btn-success download-btn" style="display: none;">Download Compressed Images</button>
                             </div>
                         </div>
                     </form>

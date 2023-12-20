@@ -55,7 +55,7 @@ $(document).ready(function () {
 
         $('.loading-div').hide();
         $('#compressedImageDiv').addClass('hidden');
-        $('#downloadBtn').hide();
+        $('#downloadBtn').show();
 
         let compressedImageContainer = document.getElementById('compressedImageDiv');
         compressedImageContainer.innerHTML = '';
@@ -81,14 +81,42 @@ $(document).ready(function () {
             div.appendChild(p);
             div.appendChild(image);
             compressedImagesDiv.appendChild(div);
-
-            let downloadLink = document.createElement('a');
-            downloadLink.href = imageUrl;
-            downloadLink.download = imageFile;
-            downloadLink.innerHTML = `Download Image ${i + 1}`;
-            compressedImagesDiv.appendChild(downloadLink);
         }
+
+        $('#downloadBtn').click(function () {
+            downloadZip(imageFiles);
+        });
 
         $(compressedImageContainer).removeClass('hidden');
     }
+
+    function downloadZip(imageFiles) {
+        $.ajax({
+            url: 'download-all.php',
+            type: 'POST',
+            data: { imageFiles: imageFiles },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (data) {
+                handleDownload(data);
+            },
+            error: function () {
+                alert('Error during download-all.');
+            }
+        });
+    }
+    
+    function handleDownload(blob) {
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'resized_images.zip';
+    
+        document.body.appendChild(link);
+    
+        link.click();
+    
+        document.body.removeChild(link);
+    }
+    
 });
