@@ -20,27 +20,75 @@ $(document).ready(function () {
 
     $('#compressionForm').submit(function (e) {
         e.preventDefault();
+
         var formData = new FormData($(this)[0]);
+
         $.ajax({
             url: 'compress.php',
             type: 'POST',
             data: formData,
             async: false,
-            success: function (data) {
-                var result = data;
-                if (result.success) {
-                    $('.loading-div').hide();
-                    $('#compressedImage').attr('src', result.imageUrl);
-                    $('#compressedImageDiv').removeClass('hidden');
-                    $('#downloadBtn').attr('href', result.downloadUrl);
-                    $('#downloadBtn').show();
-                } else {
-                    alert('Error during compression.');
-                }
-            },
             cache: false,
             contentType: false,
-            processData: false
+            processData: false,
+            success: function (data) {
+                handleCompressionResults(data);
+            },
+            error: function () {
+                alert('Error during compression.');
+            }
         });
     });
+
+    function handleCompressionResults(results) {
+        if (!results.success) {
+            alert(results.message);
+            return;
+        }
+
+        var imageFiles = results.imageFiles;
+
+        if (imageFiles.length === 0) {
+            alert('No files uploaded.');
+            return;
+        }
+
+        $('.loading-div').hide();
+        $('#compressedImageDiv').addClass('hidden');
+        $('#downloadBtn').hide();
+
+        let compressedImageContainer = document.getElementById('compressedImageDiv');
+        compressedImageContainer.innerHTML = '';
+        let h4 = document.createElement('h4');
+        let compressedImagesDiv = document.createElement('div');
+        compressedImagesDiv.classList.add('compressedImagesDiv');
+        h4.innerHTML = 'Compressed Images';
+        compressedImageContainer.appendChild(h4);
+        compressedImageContainer.appendChild(compressedImagesDiv);
+
+        for (let i = 0; i < imageFiles.length; i++) {
+            let imageFile = imageFiles[i];
+            let imageUrl = 'images/' + imageFile;
+
+            let div = document.createElement('div');
+            div.classList.add('compressedImageDiv');
+            let p = document.createElement('p');
+            let image = document.createElement('img');
+            image.src = imageUrl;
+            image.classList.add('compressed-image');
+
+            p.innerHTML = `Image ${i + 1}`;
+            div.appendChild(p);
+            div.appendChild(image);
+            compressedImagesDiv.appendChild(div);
+
+            let downloadLink = document.createElement('a');
+            downloadLink.href = imageUrl;
+            downloadLink.download = imageFile;
+            downloadLink.innerHTML = `Download Image ${i + 1}`;
+            compressedImagesDiv.appendChild(downloadLink);
+        }
+
+        $(compressedImageContainer).removeClass('hidden');
+    }
 });

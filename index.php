@@ -27,13 +27,13 @@
                     <form id="compressionForm" enctype="multipart/form-data">
                         <div id="drop-area-text" class="mb-2">
                             <p>Drag & Drop Images Here or Click to Choose</p>
-                            <input type="file" class="form-control d-none" name="imagefile" id="imageInput"
-                                accept="image/*">
+                            <input type="file" class="form-control d-none" name="imagefile[]" id="imageInput" accept="image/*" multiple>
+
                         </div>
 
-                        <div class="d-flex justify-content-between image-container mt-4">
+                        <div class=" image-container mt-4">
                             <div id="originalImageDiv" class="hidden">
-                                <h4>Original Image</h4>
+                                <h4>Original Images</h4>
                                 <img src="" id="originalImage" alt="">
                             </div>
                             <div id="compressedImageDiv" class="hidden">

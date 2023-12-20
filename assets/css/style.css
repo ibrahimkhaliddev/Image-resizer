@@ -20,11 +20,6 @@
     display: none !important;
 }
 
-.image-container img {
-    width: 200px;
-    height: 200px;
-}
-
 .main-div {
     padding: 0px;
     position: relative;
@@ -115,4 +110,92 @@
 
 #drop-area-text:hover {
     background-color: #f8f8f8;
+}
+
+#originalImageDiv{
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#originalImageDiv h4{
+    text-align: center;
+}
+
+.previewImagesDiv{
+    width: 100%;
+    /* padding: 20px; */
+    margin-top: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.previewImagesDiv img{
+    width: 100px;
+    height: 100px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.previewImagesDiv > div {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.previewImagesDiv > div > p {
+    font-size: 12px;
+    margin: 0px;
+    padding: 8px 0px;
+    width: 100px;
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+}
+
+#compressedImageDiv{
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+#compressedImageDiv h4{
+    text-align: center;
+}
+
+.compressedImagesDiv{
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.compressedImagesDiv img{
+    width: 100px;
+    height: 100px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.compressedImagesDiv > div {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.compressedImagesDiv > div > p {
+    font-size: 12px;
+    margin: 0px;
+    padding: 8px 0px;
+    width: 100px;
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
 }

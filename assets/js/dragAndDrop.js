@@ -29,11 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let files = draggedData.files;
 
         handleFiles(files);
-
-        imageInput.files = files;
-
-        let event = new Event('change');
-        imageInput.dispatchEvent(event);
     });
 
     dropArea.addEventListener("click", function () {
@@ -58,19 +53,41 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function handleFiles(files) {
+    let previewContainer = document.getElementById('originalImageDiv');
+    previewContainer.innerHTML = '';
+    let h4 = document.createElement('h4');
+    let previewImagesDiv = document.createElement('div');
+    previewImagesDiv.classList.add('previewImagesDiv');
+    h4.innerHTML = 'Original Images';
+    previewContainer.appendChild(h4);
+    previewContainer.appendChild(previewImagesDiv);
+
+    let formData = new FormData();
+
     for (const file of files) {
-        uploadFile(file);
+        let reader = new FileReader();
+
+        reader.onload = function (e) {
+            let div = document.createElement('div');
+            let p = document.createElement('p');
+            let image = document.createElement('img');
+            image.src = e.target.result;
+            image.classList.add('preview-image');
+            let fileSizeKB = (file.size / 1024).toFixed(0);
+            p.innerHTML = `${fileSizeKB} KB`;
+
+            div.appendChild(p);
+            div.appendChild(image);
+            previewImagesDiv.appendChild(div);
+
+            formData.append('imagefile[]', file, file.name);
+        };
+
+        reader.readAsDataURL(file);
     }
-}
 
-function uploadFile(file) {
-    let reader = new FileReader();
-
-    reader.onload = function (e) {
-        let image = document.getElementById('originalImage');
-        image.src = e.target.result;
-        document.getElementById('originalImageDiv').classList.remove('hidden');
-    };
-
-    reader.readAsDataURL(file);
+    let imageInput = document.getElementById("imageInput");
+    imageInput.files = files;
+    imageInput.dispatchEvent(new Event('change')); 
+    $(previewContainer).removeClass('hidden');
 }

@@ -1,37 +1,54 @@
 <?php
+
 if (isset($_FILES['imagefile'])) {
-    $filename = $_FILES['imagefile']['name'];
+    $fileCount = count($_FILES['imagefile']['name']);
+    $results = array();
 
-    $valid_ext = array('png', 'jpeg', 'jpg');
+    for ($i = 0; $i < $fileCount; $i++) {
+        $filename = $_FILES['imagefile']['name'][$i];
 
-    $location = "images/" . time() . '-' . $filename;
+        $valid_ext = array('png', 'jpeg', 'jpg');
+        $location = "images/" . time() . '-' . $filename;
 
-    $file_extension = pathinfo($location, PATHINFO_EXTENSION);
-    $file_extension = strtolower($file_extension);
+        $file_extension = pathinfo($location, PATHINFO_EXTENSION);
+        $file_extension = strtolower($file_extension);
 
-    if (in_array($file_extension, $valid_ext)) {
-        $desired_width = isset($_POST['widthInput']) ? (int)$_POST['widthInput'] : null;
-        $desired_height = isset($_POST['heightInput']) ? (int)$_POST['heightInput'] : null;
-        $desired_size_kb = isset($_POST['qualityInput']) ? (int)$_POST['qualityInput'] : 0;
-        $result = compressAndResizeImage($_FILES['imagefile']['tmp_name'], $location, $desired_size_kb, $desired_width, $desired_height);
+        if (in_array($file_extension, $valid_ext)) {
+            $desired_width = isset($_POST['widthInput']) ? (int)$_POST['widthInput'] : null;
+            $desired_height = isset($_POST['heightInput']) ? (int)$_POST['heightInput'] : null;
+            $desired_size_kb = isset($_POST['qualityInput']) ? (int)$_POST['qualityInput'] : 0;
 
-        header('Content-Type: application/json');
-        echo json_encode($result);
-        exit();
-    } else {
-        echo json_encode(array('success' => false, 'message' => 'Invalid file type.'));
+            $result = compressAndResizeImage($_FILES['imagefile']['tmp_name'][$i], $location, $desired_size_kb, $desired_width, $desired_height);
+
+            if ($result['success']) {
+                $results[] = basename($result['imageUrl']);
+            } else {
+                $results[] = array('success' => false, 'message' => 'Error during compression for file ' . $filename);
+            }
+        } else {
+            $results[] = array('success' => false, 'message' => 'Invalid file type for ' . $filename);
+        }
     }
+
+    header('Content-Type: application/json');
+    echo json_encode(array('success' => true, 'imageFiles' => $results));
+    exit();
+} else {
+    echo json_encode(array('success' => false, 'message' => 'No files uploaded.'));
 }
 
 function compressAndResizeImage($source, $destination, $desired_size_kb, $desired_width, $desired_height) {
     $info = getimagesize($source);
 
-    if ($info['mime'] == 'image/jpeg')
+    if ($info['mime'] == 'image/jpeg') {
         $image = imagecreatefromjpeg($source);
-    elseif ($info['mime'] == 'image/gif')
+    } elseif ($info['mime'] == 'image/gif') {
         $image = imagecreatefromgif($source);
-    elseif ($info['mime'] == 'image/png')
+    } elseif ($info['mime'] == 'image/png') {
         $image = imagecreatefrompng($source);
+    } else {
+        return array('success' => false, 'message' => 'Unsupported image type.');
+    }
 
     if ($desired_width && $desired_height) {
         $image = imagescale($image, $desired_width, $desired_height);
@@ -50,6 +67,6 @@ function compressAndResizeImage($source, $destination, $desired_size_kb, $desire
 
     imagejpeg($image, $destination, $quality);
 
-    return array('success' => true, 'imageUrl' => $destination, 'downloadUrl' => $destination);
+    return array('success' => true, 'imageUrl' => $destination, 'downloadUrl' => $destination, 'fileSize' => $current_size_kb);
 }
 ?>
