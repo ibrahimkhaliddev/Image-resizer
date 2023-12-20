@@ -62,7 +62,7 @@ $(document).ready(function () {
         let h4 = document.createElement('h4');
         let compressedImagesDiv = document.createElement('div');
         compressedImagesDiv.classList.add('compressedImagesDiv');
-        h4.innerHTML = 'Compressed Images';
+        h4.innerHTML = 'Resized Images';
         compressedImageContainer.appendChild(h4);
         compressedImageContainer.appendChild(compressedImagesDiv);
 
@@ -91,21 +91,41 @@ $(document).ready(function () {
     }
 
     function downloadZip(imageFiles) {
-        $.ajax({
-            url: 'download-all.php',
-            type: 'POST',
-            data: { imageFiles: imageFiles },
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function (data) {
-                handleDownload(data);
-            },
-            error: function () {
-                alert('Error during download-all.');
-            }
-        });
+        if (imageFiles.length === 1) {
+            // If there's only one image, download it directly
+            downloadSingleImage(imageFiles[0]);
+        } else {
+            // If there are multiple images, proceed with ZIP download
+            $.ajax({
+                url: 'download-all.php',
+                type: 'POST',
+                data: { imageFiles: imageFiles },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (data) {
+                    handleDownload(data);
+                },
+                error: function () {
+                    alert('Error during download-all.');
+                }
+            });
+        }
     }
+    
+    function downloadSingleImage(imageFile) {
+        var imageUrl = 'images/' + imageFile;
+        var link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = imageFile;
+    
+        document.body.appendChild(link);
+    
+        link.click();
+    
+        document.body.removeChild(link);
+    }
+    
     
     function handleDownload(blob) {
         var link = document.createElement('a');
