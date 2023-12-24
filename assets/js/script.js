@@ -92,10 +92,8 @@ $(document).ready(function () {
 
     function downloadZip(imageFiles) {
         if (imageFiles.length === 1) {
-            // If there's only one image, download it directly
             downloadSingleImage(imageFiles[0]);
         } else {
-            // If there are multiple images, proceed with ZIP download
             $.ajax({
                 url: 'download-all.php',
                 type: 'POST',
